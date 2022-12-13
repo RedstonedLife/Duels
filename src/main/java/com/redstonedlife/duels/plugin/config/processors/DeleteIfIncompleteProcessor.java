@@ -1,4 +1,4 @@
-package com.redstonedlife.duels.main.config.processors;
+package com.redstonedlife.duels.plugin.config.processors;
 
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.objectmapping.meta.Processor;

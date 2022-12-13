@@ -1,4 +1,4 @@
-package com.redstonedlife.duels.main.config.entities;
+package com.redstonedlife.duels.plugin.config.entities;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

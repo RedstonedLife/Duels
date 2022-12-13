@@ -1,6 +1,9 @@
-package com.redstonedlife.duels.main;
+package com.redstonedlife.duels.plugin;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+
+import java.io.InputStream;
 
 public class Duels extends JavaPlugin implements IDuels {
 
@@ -30,4 +33,6 @@ public class Duels extends JavaPlugin implements IDuels {
     public boolean isIsPluginSetup() {return isPluginSetup;}
 
     public void setIsPluginSetup(boolean isPluginSetup) {this.isPluginSetup = isPluginSetup;}
+
+    @Override public InputStream getResource(@NotNull String filename) {return super.getResource(filename);}
 }

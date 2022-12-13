@@ -1,4 +1,4 @@
-package com.redstonedlife.duels.main.config.annotations;
+package com.redstonedlife.duels.plugin.config.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

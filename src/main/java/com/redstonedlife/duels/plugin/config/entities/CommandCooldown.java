@@ -1,6 +1,6 @@
-package com.redstonedlife.duels.main.config.entities;
+package com.redstonedlife.duels.plugin.config.entities;
 
-import com.redstonedlife.duels.main.config.processors.DeleteIfIncompleteProcessor;
+import com.redstonedlife.duels.plugin.config.processors.DeleteIfIncompleteProcessor;
 
 import java.util.regex.Pattern;
 
