@@ -1,0 +1,33 @@
+###############################
+# DO NOT TOUCH CONFIG_VERSION #
+###############################
+# CONFIG_VERSION GETS UPDATED #
+# ALONGSIDE DEVELOPMENT AND   #
+# IT ALLOWS THE PLUGIN TO     #
+# MIGRATE OLD CONFIGS TO NEW  #
+# CONFIGS AUTOMATICALLY       #
+###############################
+# IF THE PLUGIN DETECTS       #
+# A MISMATCHED CONFIG VERSION #
+# OR ONE THAT IS NOT OFFICIAL #
+# IT WILL NOT START           #
+###############################
+CONFIG_VERSION: 1
+
+###############################
+# Database Connection (MYSQL) #
+###############################
+database:
+  ip: "localhost"
+  port: 3306
+  username: ""
+  password: ""
+
+###############################
+# Schematics Section          #
+# Supported APIs: FAWE & W/E  #
+###############################
+
+schematics:
+  location: "/schematics/"
+  loader: "FAWE"
