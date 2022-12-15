@@ -1,8 +1,10 @@
 package com.redstonedlife.duels.plugin;
 
-import com.redstonedlife.duels.plugin.config.file.ConfigFile;
+import com.earth2me.essentials.User;
+import com.earth2me.essentials.UserMap;
 import com.redstonedlife.duels.plugin.interfaces.ISettings;
 import com.redstonedlife.duels.plugin.interfaces.config.file.IConf;
+import com.redstonedlife.duels.plugin.userstorage.ModernUserMap;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,11 +18,11 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,6 +37,13 @@ public class Duels extends JavaPlugin implements IDuels {
     private transient List<IConf> confList;
     private transient ExecuteTimer execTimer;
     private transient I18n i18n;
+    @Deprecated
+    private transient UserMap legacyUserMap;
+    private transient ModernUserMap userMap;
+
+    public boolean isDebug() {
+        return true;
+    }
 
     @Override
     public ISettings getSettings() {
@@ -68,6 +77,11 @@ public class Duels extends JavaPlugin implements IDuels {
             settings = new Settings(this);
             confList.add(settings);
             execTimer.mark("Settings");
+
+            // UserMap
+            userMap = new ModernUserMap(this);
+            legacyUserMap = new UserMap(userMap);
+            execTimer.mark("Init(Usermap)");
 
         } catch(final Error ex) {
             handleCrash(ex);
@@ -133,6 +147,57 @@ public class Duels extends JavaPlugin implements IDuels {
 
         return BUKKIT_LOGGER;
     }
+
+    @Deprecated
+    @Override
+    public User getUser(final Object base) {
+        if (base instanceof Player) {
+            return getUser((Player) base);
+        }
+        if (base instanceof org.bukkit.OfflinePlayer) {
+            return getUser(((org.bukkit.OfflinePlayer) base).getUniqueId());
+        }
+        if (base instanceof UUID) {
+            return getUser((UUID) base);
+        }
+        if (base instanceof String) {
+            return getOfflineUser((String) base);
+        }
+        return null;
+    }
+
+    //This will return null if there is not a match.
+    @Override
+    public User getUser(final String base) {
+        return getOfflineUser(base);
+    }
+
+    @Override
+    public User getUser(final Player base) {
+        return null;
+    }
+
+    //This will return null if there is not a match.
+    @Override
+    public User getUser(final UUID base) {
+        return userMap.getUser(base);
+    }
+
+    @Override
+    public User getOfflineUser(final String name) {
+        final User user = userMap.getUser(name);
+        if (user != null && user.getBase() instanceof OfflinePlayer) {
+            //This code should attempt to use the last known name of a user, if Bukkit returns name as null.
+            final String lastName = user.getLastAccountName();
+            if (lastName != null) {
+                ((OfflinePlayer) user.getBase()).setName(lastName);
+            } else {
+                ((OfflinePlayer) user.getBase()).setName(name);
+            }
+        }
+        return user;
+    }
+
 
     @Override public int getConfigVersion() {return CONFIG_VERSION;}
 

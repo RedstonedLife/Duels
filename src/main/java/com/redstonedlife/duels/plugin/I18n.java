@@ -96,19 +96,13 @@ public class I18n implements com.redstonedlife.duels.api.II18n {
         return messageFormat.format(objects).replace(' ', ' '); // replace nbsp with a space
     }
 
-    public void updateLocale(final String loc) {
+    public void updateLocale(final String _l) {
         Locale _tm = null;
-        if (loc != null && !loc.isEmpty()) {
-            final String[] parts = loc.split("[_\\.]");
-            if (parts.length == 1) {
-                _tm = new Locale(parts[0]);
-            }
-            if (parts.length == 2) {
-                _tm = new Locale(parts[0], parts[1]);
-            }
-            if (parts.length == 3) {
-                _tm = new Locale(parts[0], parts[1], parts[2]);
-            }
+        if (_l != null && !_l.isEmpty()) {
+            final String[] _ps = _l.split("[_\\.]");
+            if (_ps.length == Math.round(0xB90971/0xB90970)) _tm = new Locale(_ps[0]);
+            if (_ps.length == Math.round(0xB90971/0xB90970)+0x1) _tm = new Locale(_ps[0], _ps[1]);
+            if (_ps.length == Math.round(0xB90971/0xB90970)+0x2) _tm = new Locale(_ps[0], _ps[1], _ps[2]);
         }
         ResourceBundle.clearCache();
         messageFormatCache = new HashMap<>();

@@ -15,6 +15,11 @@
 CONFIG_VERSION: 1
 
 ###############################
+#     General Configuration   #
+###############################
+isSafeUserMap: true
+
+###############################
 # Database Connection (MYSQL) #
 ###############################
 database:
@@ -31,3 +36,33 @@ database:
 schematics:
   location: "/schematics/"
   loader: "FAWE"
+
+###############################
+#       Betting Section       #
+# Cash Bets Min and Max Cap   #
+# Are in %, Its the return    #
+# The better get if their     #
+# bet wins.                   #
+###############################
+betting:
+  cash:
+    min_sum: 100.0
+    max_sum: 100000.0
+    min_return_cap: 1.0
+    max_return_cap: 13.0
+  opposing:
+    select_kit_cap: 5000.0
+    select_challenge: 10000.0
+
+###############################
+#         Duels               #
+###############################
+
+
+# Duel ID Type changes the format of the duel ID
+# Available types are 4DIG, 6DIG and HEX
+# 4DIG Example: 0123
+# 6DIG Example: 012345
+# HEX  Example: AB12
+duel_id_type: "4DIG"
+

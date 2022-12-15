@@ -1,6 +1,7 @@
 package com.redstonedlife.duels.plugin;
 
 import com.redstonedlife.duels.plugin.config.DuelsConfiguration;
+import com.redstonedlife.duels.plugin.enums.DuelID;
 import com.redstonedlife.duels.plugin.enums.SchematicLoader;
 import com.redstonedlife.duels.plugin.interfaces.ISettings;
 
@@ -19,6 +20,15 @@ public class Settings implements ISettings {
     private String mysql_pass;
     private String schematics_location;
     private SchematicLoader schematics_loader;
+    private double minBetSum;
+    private double maxBetSum;
+    private double minReturnCap;
+    private double maxReturnCap;
+    private double opposingSelectKitSum;
+    private double opposingSelectChallengeSum;
+    private DuelID duelID;
+    private boolean isSafeUserMap;
+    private int maxUserCacheCount;
 
     public Settings(final IDuels duels) {
         this.duels = duels;
@@ -38,6 +48,23 @@ public class Settings implements ISettings {
     @Override public String mysql_pass() {return mysql_pass;}
     @Override public String schematics_location() {return schematics_location;}
     @Override public SchematicLoader schematic_loader() {return schematics_loader;}
+    @Override public double minBetSum() {return minBetSum;}
+    @Override public double maxBetSum() {return maxBetSum;}
+    @Override public double minReturnCap() {return minReturnCap;}
+    @Override public double maxReturnCap() {return maxReturnCap;}
+    @Override public double opposingSelectKitSum() {return opposingSelectKitSum;}
+    @Override public double opposingSelectChallengeSum() {return opposingSelectChallengeSum;}
+    @Override public void setMinBetSum(double var) {this.minBetSum = var;}
+    @Override public void setMaxBetSum(double var) {this.maxBetSum = var;}
+    @Override public void setMinReturnCap(double var) {this.minReturnCap = var;}
+    @Override public void setMaxReturnCap(double var) {this.maxReturnCap = var;}
+    @Override public void setOpposingSelectKitSum(double var) {this.opposingSelectKitSum = var;}
+    @Override public void setOpposingSelectChallengeSum(double var) {this.opposingSelectChallengeSum = var;}
+    @Override public DuelID duelID() {return duelID;}
+    @Override
+    public void setDuelID(String value) {this.duelID = DuelID.fromValue(value);}
+    @Override public boolean isSafeUsermap() {return isSafeUserMap;}
+    @Override public int getMaxUserCacheCount() {return config.getInt("max-user-cache-count", (int) (Runtime.getRuntime().maxMemory() / 1024 / 96));}
 
     @Override
     public void reloadConfig() {
@@ -50,6 +77,13 @@ public class Settings implements ISettings {
         mysql_pass = _msqlPSW();
         schematics_location = _schemLoc();
         schematics_loader = _schemLoader();
+        minBetSum = _mnSb();
+        maxBetSum = _mxSb();
+        minReturnCap = _mnRtCap();
+        maxReturnCap = _mxRtCap();
+        opposingSelectKitSum = _sltOppKit();
+        opposingSelectChallengeSum = _sltOppChallenge();
+        isSafeUserMap = _isSafeUserMap();
 
         reloadCount.incrementAndGet();
     }
@@ -61,4 +95,11 @@ public class Settings implements ISettings {
     private String _msqlPSW() {return config.getString("database.password", "");}
     private String _schemLoc() {return config.getString("schematics.location", "/schematics/");}
     private SchematicLoader _schemLoader() {return SchematicLoader.valueOf(config.getString("schematics.loader", "FAWE"));}
+    private double _mnSb() {return config.getDouble("betting.cash.min_sum", 100.0D);}
+    private double _mxSb() {return config.getDouble("betting.cash.max_sum", 100000.0D);}
+    private double _mnRtCap() {return config.getDouble("betting.cash.min_return_cap", 1.0D);}
+    private double _mxRtCap() {return config.getDouble("betting.cash.max_return_cap", 13.0D);}
+    private double _sltOppKit() {return config.getDouble("opposing.select_kit_cap", 5000.0D);}
+    private double _sltOppChallenge() {return config.getDouble("opposing.select_challenge", 10000.0D);}
+    private boolean _isSafeUserMap() {return config.getBoolean("isSafeUserMap", true);}
 }

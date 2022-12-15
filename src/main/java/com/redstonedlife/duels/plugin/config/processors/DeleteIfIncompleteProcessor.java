@@ -15,9 +15,8 @@ public class DeleteIfIncompleteProcessor implements Processor<Object> {
     public void process(Object value, ConfigurationNode destination) {
         if (value == null) return;
         try {
-            if (value instanceof IncompleteEntity && ((IncompleteEntity) value).isIncomplete()) {
-                destination.set(null);
-            } else if (value instanceof List<?>) {
+            if (value instanceof IncompleteEntity && ((IncompleteEntity) value).isIncomplete()) destination.set(null);
+            else if (value instanceof List<?>) {
                 boolean modified = false;
                 final List<?> newList = new ArrayList<>((List<?>) value);
                 for (final Object o : (List<?>) value) {
@@ -26,9 +25,8 @@ public class DeleteIfIncompleteProcessor implements Processor<Object> {
                         modified = true;
                     }
                 }
-                if (modified) {
-                    destination.set(newList);
-                }
+                if (modified) destination.set(newList);
+
             } else if (value instanceof Map<?, ?>) {
                 boolean modified = false;
                 final Map<?, ?> newMap = new HashMap<>((Map<?, ?>) value);
@@ -38,9 +36,8 @@ public class DeleteIfIncompleteProcessor implements Processor<Object> {
                         modified = true;
                     }
                 }
-                if (modified) {
-                    destination.set(newMap);
-                }
+                if (modified) destination.set(newMap);
+
             }
         } catch (final SerializationException e) {
             e.printStackTrace();
