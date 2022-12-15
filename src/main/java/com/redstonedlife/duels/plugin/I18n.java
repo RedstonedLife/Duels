@@ -61,14 +61,14 @@ public class I18n implements com.redstonedlife.duels.api.II18n {
                 return localeBundles.get(locale).getString(string);
             }
         } catch (final NullPointerException ex) {
-          if (duels == null || duels.getSettings().isDebug())
+          if (duels == null)
               duels.getLogger().log(
                       Level.WARNING,
                       String.format("Could not find Messages for Language Locale %s", locale.toString())
               );
           return defaultBundle.getString(string);
         } catch (final MissingResourceException ex) {
-            if (duels == null || duels.getSettings().isDebug())
+            if (duels == null)
                 duels.getLogger().log(
                         Level.WARNING,
                         String.format(

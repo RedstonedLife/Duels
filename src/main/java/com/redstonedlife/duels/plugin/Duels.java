@@ -12,6 +12,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -34,6 +36,10 @@ public class Duels extends JavaPlugin implements IDuels {
     private transient ExecuteTimer execTimer;
     private transient I18n i18n;
 
+    @Override
+    public ISettings getSettings() {
+        return settings;
+    }
 
     @Override
     public void onEnable() {
@@ -134,11 +140,40 @@ public class Duels extends JavaPlugin implements IDuels {
     public Collection<Player> getOnlinePlayers() {
         return (Collection<Player>) getServer().getOnlinePlayers();
     }
+    @Override public InputStream getResource(@NotNull String filename) {return super.getResource(filename);}
 
     @Override
-    public ISettings getSettings() {
-        return null;
+    public BukkitScheduler getScheduler() {
+        return this.getServer().getScheduler();
     }
 
-    @Override public InputStream getResource(@NotNull String filename) {return super.getResource(filename);}
+    @Override
+    public BukkitTask runTaskAsynchronously(final Runnable run) {
+        return this.getScheduler().runTaskAsynchronously(this, run);
+    }
+
+    @Override
+    public BukkitTask runTaskLaterAsynchronously(final Runnable run, final long delay) {
+        return this.getScheduler().runTaskLaterAsynchronously(this, run, delay);
+    }
+
+    @Override
+    public BukkitTask runTaskTimerAsynchronously(final Runnable run, final long delay, final long period) {
+        return this.getScheduler().runTaskTimerAsynchronously(this, run, delay, period);
+    }
+
+    @Override
+    public int scheduleSyncDelayedTask(final Runnable run) {
+        return this.getScheduler().scheduleSyncDelayedTask(this, run);
+    }
+
+    @Override
+    public int scheduleSyncDelayedTask(final Runnable run, final long delay) {
+        return this.getScheduler().scheduleSyncDelayedTask(this, run, delay);
+    }
+
+    @Override
+    public int scheduleSyncRepeatingTask(final Runnable run, final long delay, final long period) {
+        return this.getScheduler().scheduleSyncRepeatingTask(this, run, delay, period);
+    }
 }
