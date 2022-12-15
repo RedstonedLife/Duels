@@ -1,6 +1,6 @@
 name: Duels
 version: "Duels:0001:a"
-main: com.redstonedlife.duels.main.Duels
+main: com.redstonedlife.duels.plugin.Duels
 api-version: 1.19
 author: RedstonedLife
 description: A duel plugin for your server!
