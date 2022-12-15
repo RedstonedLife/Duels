@@ -91,6 +91,14 @@ public class Duels extends JavaPlugin implements IDuels {
 
     public void setIsPluginSetup(boolean isPluginSetup) {this.isPluginSetup = isPluginSetup;}
 
+    public static Logger getWrappedLogger() {
+        if (LOGGER != null) {
+            return LOGGER;
+        }
+
+        return BUKKIT_LOGGER;
+    }
+
     @Override public int getConfigVersion() {return CONFIG_VERSION;}
 
     @Override
