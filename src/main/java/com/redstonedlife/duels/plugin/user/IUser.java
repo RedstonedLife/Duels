@@ -1,5 +1,6 @@
 package com.redstonedlife.duels.plugin.user;
 
+import com.redstonedlife.duels.api.IAsyncTeleport;
 import com.redstonedlife.duels.api.MaxMoneyException;
 import com.redstonedlife.duels.plugin.CommandSource;
 import com.redstonedlife.duels.plugin.commands.IDuelCommand;

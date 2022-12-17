@@ -35,7 +35,7 @@ public interface IAsyncTeleport {
      * @param future - Future which is completed with the success status of the execution
      */
     void nowUnsafe(Location loc, PlayerTeleportEvent.TeleportCause cause, CompletableFuture<Boolean> future);
-    
+
     /**
      * Teleport wrapper used to handle throwing user home after a jail sentence
      *
