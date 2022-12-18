@@ -4,6 +4,7 @@ import com.earth2me.essentials.User;
 import com.earth2me.essentials.UserMap;
 import com.redstonedlife.duels.plugin.interfaces.ISettings;
 import com.redstonedlife.duels.plugin.interfaces.config.file.IConf;
+import com.redstonedlife.duels.plugin.user.OfflinePlayer;
 import com.redstonedlife.duels.plugin.userstorage.ModernUserMap;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
