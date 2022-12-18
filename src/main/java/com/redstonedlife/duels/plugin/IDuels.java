@@ -1,14 +1,13 @@
 package com.redstonedlife.duels.plugin;
 
 import com.earth2me.essentials.User;
+import com.redstonedlife.duels.api.IUser;
 import com.redstonedlife.duels.plugin.interfaces.ISettings;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.UUID;
@@ -28,7 +27,7 @@ public interface IDuels extends Plugin {
     @Deprecated User getUser(Object base);
     User getUser(UUID base);
     User getUser(String base);
-    User getUser(Player base);
+    IUser getUser(Player base);
     BukkitScheduler getScheduler();
 
     BukkitTask runTaskAsynchronously(Runnable run);

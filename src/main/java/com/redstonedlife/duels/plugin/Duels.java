@@ -2,6 +2,7 @@ package com.redstonedlife.duels.plugin;
 
 import com.earth2me.essentials.User;
 import com.earth2me.essentials.UserMap;
+import com.redstonedlife.duels.api.IUser;
 import com.redstonedlife.duels.plugin.interfaces.ISettings;
 import com.redstonedlife.duels.plugin.interfaces.config.file.IConf;
 import com.redstonedlife.duels.plugin.user.OfflinePlayer;
@@ -174,7 +175,7 @@ public class Duels extends JavaPlugin implements IDuels {
     }
 
     @Override
-    public User getUser(final Player base) {
+    public IUser getUser(final Player base) {
         return null;
     }
 

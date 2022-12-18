@@ -1,8 +1,8 @@
 package com.redstonedlife.duels.plugin.userstorage;
 
-import com.earth2me.essentials.User;
-import com.earth2me.essentials.api.UserDoesNotExistException;
+import com.redstonedlife.duels.api.UserDoesNotExistException;
 import com.redstonedlife.duels.plugin.user.OfflinePlayer;
+import com.redstonedlife.duels.plugin.user.User;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -48,7 +48,7 @@ public class UserMap {
 
         final User user = userMap.getUser(userPlayer);
         if (user == null) {
-            throw new UserDoesNotExistException("User not found");
+            throw new UserDoesNotExistException(null,"User not found");
         }
         return user;
     }

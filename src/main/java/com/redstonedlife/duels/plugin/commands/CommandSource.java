@@ -1,5 +1,6 @@
 package com.redstonedlife.duels.plugin.commands;
 
+import com.redstonedlife.duels.api.IUser;
 import com.redstonedlife.duels.plugin.IDuels;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -24,7 +25,7 @@ public class CommandSource {
         return null;
     }
 
-    public final net.ess3.api.IUser getUser(final IDuels duels) {
+    public final IUser getUser(final IDuels duels) {
         if (sender instanceof Player) {
             return duels.getUser((Player) sender);
         }
