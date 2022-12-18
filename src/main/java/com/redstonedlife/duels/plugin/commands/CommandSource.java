@@ -1,5 +1,6 @@
-package com.redstonedlife.duels.plugin;
+package com.redstonedlife.duels.plugin.commands;
 
+import com.redstonedlife.duels.plugin.IDuels;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

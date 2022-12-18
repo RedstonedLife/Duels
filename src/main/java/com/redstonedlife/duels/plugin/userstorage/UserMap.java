@@ -1,8 +1,8 @@
-package com.redstonedlife.duels.plugin;
+package com.redstonedlife.duels.plugin.userstorage;
 
 import com.earth2me.essentials.User;
 import com.earth2me.essentials.api.UserDoesNotExistException;
-import com.redstonedlife.duels.plugin.userstorage.ModernUserMap;
+import com.redstonedlife.duels.plugin.user.OfflinePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

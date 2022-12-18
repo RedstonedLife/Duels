@@ -1,4 +1,4 @@
-package com.redstonedlife.duels.plugin;
+package com.redstonedlife.duels.plugin.user;
 
 import com.destroystokyo.paper.ClientOption;
 import com.destroystokyo.paper.Title;

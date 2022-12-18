@@ -1,4 +1,4 @@
-package com.redstonedlife.duels.plugin;
+package com.redstonedlife.duels.plugin.userstorage;
 
 @Deprecated
 public class UUIDMap {
