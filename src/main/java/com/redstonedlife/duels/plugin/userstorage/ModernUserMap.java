@@ -1,15 +1,12 @@
 package com.redstonedlife.duels.plugin.userstorage;
 
-import com.earth2me.essentials.User;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.redstonedlife.duels.plugin.IDuels;
 import com.redstonedlife.duels.plugin.OfflinePlayer;
 import com.redstonedlife.duels.plugin.utils.NumberUtil;
-import net.ess3.api.IEssentials;
 import org.bukkit.entity.Player;
-
 import java.io.File;
 import java.util.Map;
 import java.util.Set;
