@@ -29,9 +29,11 @@ hs_err_pid*
 *.ipr
 *.bat
 *.iws
+*.mp4
 
 # IntelliJ
 out/
+gource/
 target/
 # mpeltonen/sbt-idea plugin
 .idea_modules/
