@@ -9,5 +9,5 @@ public interface IDuelCommand {
     String getName();
     Map<String, String> getUsageStrings();
     void run(Server server, String commandLabel, Command cmd, String[] args) throws Exception;
-    void run(Server server, CommandSource)
+    void run(Server server, CommandSource source);
 }
