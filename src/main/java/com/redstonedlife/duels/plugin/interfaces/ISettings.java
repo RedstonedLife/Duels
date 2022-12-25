@@ -34,4 +34,9 @@ public interface ISettings extends IConf {
     void setDuelID(String value);
     boolean isSafeUsermap();
     int getMaxUserCacheCount();
+    double getTeleportCooldown();
+    boolean isAlwaysTeleportSafety();
+    boolean isTeleportToCenterLocation();
+    boolean isForceDisableTeleportSafety();
+    boolean isTeleportSafetyEnabled();
 }

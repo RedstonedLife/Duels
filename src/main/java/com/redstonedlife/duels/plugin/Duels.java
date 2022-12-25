@@ -1,12 +1,19 @@
 package com.redstonedlife.duels.plugin;
 
 import com.redstonedlife.duels.api.IUser;
+import com.redstonedlife.duels.plugin.commands.CommandSource;
 import com.redstonedlife.duels.plugin.interfaces.ISettings;
 import com.redstonedlife.duels.plugin.interfaces.config.file.IConf;
 import com.redstonedlife.duels.plugin.user.OfflinePlayer;
 import com.redstonedlife.duels.plugin.user.User;
 import com.redstonedlife.duels.plugin.userstorage.ModernUserMap;
 import com.redstonedlife.duels.plugin.userstorage.UserMap;
+import com.redstonedlife.duels.plugin.utils.VersionUtil;
+import com.redstonedlife.duels.provider.providers.FixedHeightWorldInfoProvider;
+import com.redstonedlife.duels.provider.providers.ModernDataWorldInfoProvider;
+import com.redstonedlife.duels.provider.providers.ReflDataWorldInfoProvider;
+import com.redstonedlife.duels.provider.providers.WorldInfoProvider;
+import net.ess3.api.IEssentials;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -42,6 +49,7 @@ public class Duels extends JavaPlugin implements IDuels {
     @Deprecated
     private transient UserMap legacyUserMap;
     private transient ModernUserMap userMap;
+    private transient WorldInfoProvider worldInfoProvider;
 
     public boolean isDebug() {
         return true;
@@ -85,6 +93,14 @@ public class Duels extends JavaPlugin implements IDuels {
             legacyUserMap = new UserMap(userMap);
             execTimer.mark("Init(Usermap)");
 
+            if (VersionUtil.getServerBukkitVersion().isHigherThanOrEqualTo(VersionUtil.v1_17_1_R01)) {
+                worldInfoProvider = new ModernDataWorldInfoProvider();
+            } else if (VersionUtil.getServerBukkitVersion().isHigherThanOrEqualTo(VersionUtil.v1_16_5_R01)) {
+                worldInfoProvider = new ReflDataWorldInfoProvider();
+            } else {
+                worldInfoProvider = new FixedHeightWorldInfoProvider();
+            }
+
         } catch(final Error ex) {
             handleCrash(ex);
             throw ex;
@@ -105,6 +121,11 @@ public class Duels extends JavaPlugin implements IDuels {
 
     @Override
     public void initiateReload() {
+    }
+
+    @Override
+    public IEssentials getEssentials() {
+        return null;
     }
 
     private void handleCrash(final Throwable exception) {
@@ -242,5 +263,18 @@ public class Duels extends JavaPlugin implements IDuels {
     @Override
     public int scheduleSyncRepeatingTask(final Runnable run, final long delay, final long period) {
         return this.getScheduler().scheduleSyncRepeatingTask(this, run, delay, period);
+    }
+
+    @Override
+    public WorldInfoProvider getWorldInfoProvider() {
+        return worldInfoProvider;
+    }
+
+    @Override
+    public void showError(final CommandSource sender, final Throwable exception, final String commandLabel) {
+        sender.sendMessage(tl(null,"errorWithMessage", exception.getMessage()));
+        if (getSettings().isDebug()) {
+            LOGGER.log(Level.INFO, tl(null,"errorCallingCommand", commandLabel), exception);
+        }
     }
 }

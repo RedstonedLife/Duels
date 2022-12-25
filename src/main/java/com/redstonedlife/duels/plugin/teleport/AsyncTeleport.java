@@ -2,10 +2,15 @@ package com.redstonedlife.duels.plugin.teleport;
 
 import com.redstonedlife.duels.api.IAsyncTeleport;
 import com.redstonedlife.duels.api.IUser;
+import com.redstonedlife.duels.api.events.teleport.PreTeleportEvent;
 import com.redstonedlife.duels.plugin.IDuels;
 import com.redstonedlife.duels.plugin.utils.DateUtil;
+import com.redstonedlife.duels.plugin.utils.LocationUtil;
+import io.papermc.lib.PaperLib;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 import java.util.Calendar;
@@ -100,6 +105,80 @@ public class AsyncTeleport implements IAsyncTeleport {
         user.sendMessage(tl(null,"dontMoveMessage", DateUtil.formatDateDiff(c.getTimeInMillis())));
     }
 
+    void respawnNow(final IUser teleportee, final PlayerTeleportEvent.TeleportCause cause, final CompletableFuture<Boolean> future) {
+        final Player player = teleportee.getBase();
+        PaperLib.getBedSpawnLocationAsync(player, true).thenAccept(location -> {
+            if (location != null) {
+                nowAsync(teleportee, new LocationTarget(location), cause, future);
+            } else {
+                if (duels.getSettings().isDebug()) {
+                    duels.getLogger().info("Could not find bed spawn, forcing respawn event.");
+                }
+                final PlayerRespawnEvent pre = new PlayerRespawnEvent(player, player.getWorld().getSpawnLocation(), false);
+                duels.getServer().getPluginManager().callEvent(pre);
+                nowAsync(teleportee, new LocationTarget(pre.getRespawnLocation()), cause, future);
+            }
+        }).exceptionally(th -> {
+            future.completeExceptionally(th);
+            return null;
+        });
+    }
+
+    protected void nowAsync(final IUser teleportee, final ITarget target, final PlayerTeleportEvent.TeleportCause cause, final CompletableFuture<Boolean> future) {
+        future.cancel(false);
+
+        final PreTeleportEvent event = new PreTeleportEvent(teleportee, cause, target);
+        Bukkit.getServer().getPluginManager().callEvent(event);
+        if (event.isCancelled()) {
+            future.complete(false);
+            return;
+        }
+        teleportee.setLastLocation();
+        final Location targetLoc = target.getLocation();
+        if (duels.getSettings().isTeleportSafetyEnabled() && LocationUtil.isBlockOutsideWorldBorder(targetLoc.getWorld(), targetLoc.getBlockX(), targetLoc.getBlockZ())) {
+            targetLoc.setX(LocationUtil.getXInsideWorldBorder(targetLoc.getWorld(), targetLoc.getBlockX()));
+            targetLoc.setZ(LocationUtil.getZInsideWorldBorder(targetLoc.getWorld(), targetLoc.getBlockZ()));
+        }
+        PaperLib.getChunkAtAsync(targetLoc.getWorld(), targetLoc.getBlockX() >> 4, targetLoc.getBlockZ() >> 4, true, true).thenAccept(chunk -> {
+            Location loc = targetLoc;
+            if (LocationUtil.isBlockUnsafeForUser(duels, teleportee, chunk.getWorld(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())) {
+                if (duels.getSettings().isTeleportSafetyEnabled()) {
+                    if (duels.getSettings().isForceDisableTeleportSafety()) {
+                        //The chunk we're teleporting to is 100% going to be loaded here, no need to teleport async.
+                        teleportee.getBase().teleport(loc, cause);
+                    } else {
+                        try {
+                            //There's a chance the safer location is outside the loaded chunk so still teleport async here.
+                            PaperLib.teleportAsync(teleportee.getBase(), LocationUtil.getSafeDestination(duels, teleportee, loc), cause);
+                        } catch (final Exception e) {
+                            future.completeExceptionally(e);
+                            return;
+                        }
+                    }
+                } else {
+                    future.completeExceptionally(new Exception(tl(null,"unsafeTeleportDestination", loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())));
+                    return;
+                }
+            } else {
+                if (duels.getSettings().isForceDisableTeleportSafety()) {
+                    //The chunk we're teleporting to is 100% going to be loaded here, no need to teleport async.
+                    teleportee.getBase().teleport(loc, cause);
+                } else {
+                    if (duels.getSettings().isTeleportToCenterLocation()) {
+                        loc = LocationUtil.getRoundedDestination(loc);
+                    }
+                    //There's a *small* chance the rounded destination produces a location outside the loaded chunk so still teleport async here.
+                    PaperLib.teleportAsync(teleportee.getBase(), loc, cause);
+                }
+            }
+            future.complete(true);
+        }).exceptionally(th -> {
+            future.completeExceptionally(th);
+            return null;
+        });
+    }
+
+
     @Override
     public void now(final Location loc, final boolean cooldown, final PlayerTeleportEvent.TeleportCause cause, final CompletableFuture<Boolean> future) {
         if (cooldown && cooldown(false, future)) {
@@ -119,7 +198,7 @@ public class AsyncTeleport implements IAsyncTeleport {
         nowAsync(teleportOwner, target, cause, future);
         future.thenAccept(success -> {
             if (success) {
-                teleportOwner.sendMessage(tl("teleporting", target.getLocation().getWorld().getName(), target.getLocation().getBlockX(), target.getLocation().getBlockY(), target.getLocation().getBlockZ()));
+                teleportOwner.sendMessage(tl(null,"teleporting", target.getLocation().getWorld().getName(), target.getLocation().getBlockX(), target.getLocation().getBlockY(), target.getLocation().getBlockZ()));
             }
         });
     }

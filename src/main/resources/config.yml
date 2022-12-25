@@ -55,7 +55,7 @@ betting:
     select_challenge: 10000.0
 
 ###############################
-#         Duels               #
+#         Duels (Global)      #
 ###############################
 
 
@@ -65,4 +65,9 @@ betting:
 # 6DIG Example: 012345
 # HEX  Example: AB12
 duel_id_type: "4DIG"
+
+# The delay, in seconds, required between /home, /tp, etc.
+teleport-cooldown: 0
+
+
 

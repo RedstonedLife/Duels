@@ -1,8 +1,10 @@
 package com.redstonedlife.duels.plugin;
 
-import com.earth2me.essentials.User;
 import com.redstonedlife.duels.api.IUser;
+import com.redstonedlife.duels.plugin.commands.CommandSource;
 import com.redstonedlife.duels.plugin.interfaces.ISettings;
+import com.redstonedlife.duels.plugin.user.User;
+import com.redstonedlife.duels.provider.providers.WorldInfoProvider;
 import net.ess3.api.IEssentials;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -44,4 +46,6 @@ public interface IDuels extends Plugin {
     int scheduleSyncDelayedTask(Runnable run, long delay);
 
     int scheduleSyncRepeatingTask(Runnable run, long delay, long period);
+    WorldInfoProvider getWorldInfoProvider();
+    void showError(CommandSource sender, Throwable exception, String commandLabel);
 }

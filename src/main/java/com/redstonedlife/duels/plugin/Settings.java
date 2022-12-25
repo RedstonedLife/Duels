@@ -65,6 +65,9 @@ public class Settings implements ISettings {
     public void setDuelID(String value) {this.duelID = DuelID.fromValue(value);}
     @Override public boolean isSafeUsermap() {return isSafeUserMap;}
     @Override public int getMaxUserCacheCount() {return config.getInt("max-user-cache-count", (int) (Runtime.getRuntime().maxMemory() / 1024 / 96));}
+    @Override public double getTeleportCooldown() {return config.getDouble("teleport-cooldown", 0);}
+    @Override public boolean isAlwaysTeleportSafety() {return config.getBoolean("force-safe-teleport-location", false);}
+    @Override public boolean isTeleportToCenterLocation() {return config.getBoolean("teleport-to-center", true);}
 
     @Override
     public void reloadConfig() {

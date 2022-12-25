@@ -31,6 +31,8 @@ public interface IUser {
     void setLastLocation();
     void setLogoutLocation();
     IAsyncTeleport getAsyncTeleport();
+    long getLastTeleportTimestamp();
+    void setLastTeleportTimestamp(long time);
     BigDecimal getMoney();
     void setMoney(final BigDecimal value) throws MaxMoneyException;
     String getGroup();
