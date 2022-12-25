@@ -1,8 +1,8 @@
 package com.redstonedlife.duels.plugin.userstorage;
 
-import com.earth2me.essentials.utils.StringUtil;
 import com.google.common.io.Files;
 import com.redstonedlife.duels.plugin.IDuels;
+import com.redstonedlife.duels.plugin.utils.StringUtil;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

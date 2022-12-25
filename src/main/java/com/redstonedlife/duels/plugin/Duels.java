@@ -196,9 +196,34 @@ public class Duels extends JavaPlugin implements IDuels {
     }
 
     @Override
-    public IUser getUser(final Player base) {
-        return null;
+    public User getUser(final Player base) {
+        if (base == null) {
+            return null;
+        }
+
+        if (userMap == null) {
+            LOGGER.log(Level.WARNING, "Duels userMap not initialized");
+            return null;
+        }
+
+        User user = userMap.getUser(base.getUniqueId());
+
+        if (user == null) {
+            if (getSettings().isDebug()) {
+                LOGGER.log(Level.INFO, "Constructing new userfile from base player " + base.getName());
+            }
+            user = userMap.loadUncachedUser(base);
+
+            // The above method will end up creating a new user, but it will not be added to the cache.
+            // Since we already call UserMap#getUser() above, we are already okay with adding the user to the cache,
+            // so we need to manually add the user to the cache in order to avoid a memory leak and maintain behavior.
+            userMap.addCachedUser(user);
+        } else {
+            user.update(base);
+        }
+        return user;
     }
+
 
     //This will return null if there is not a match.
     @Override

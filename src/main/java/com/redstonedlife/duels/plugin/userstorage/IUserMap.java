@@ -1,6 +1,6 @@
 package com.redstonedlife.duels.plugin.userstorage;
 
-import com.earth2me.essentials.User;
+import com.redstonedlife.duels.plugin.user.User;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
@@ -26,13 +26,13 @@ public interface IUserMap {
      */
     int getUserCount();
 
-    User getUser(final UUID uuid);
+    com.redstonedlife.duels.plugin.user.User getUser(final UUID uuid);
 
-    User getUser(final Player base);
+    com.redstonedlife.duels.plugin.user.User getUser(final Player base);
 
-    User getUser(final String name);
+    com.redstonedlife.duels.plugin.user.User getUser(final String name);
 
-    User loadUncachedUser(final Player base);
+    com.redstonedlife.duels.plugin.user.User loadUncachedUser(final Player base);
 
     /**
      * Gets a User by the given UUID in the cache, if present, otherwise loads the user without placing them in the cache.

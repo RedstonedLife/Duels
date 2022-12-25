@@ -2,6 +2,7 @@ package com.redstonedlife.duels.plugin.user;
 
 import com.redstonedlife.duels.api.IMessageRecipient;
 import com.redstonedlife.duels.api.IUser;
+import com.redstonedlife.duels.plugin.teleport.AsyncTeleport;
 import com.redstonedlife.duels.plugin.utils.EnumUtil;
 import org.bukkit.Statistic;
 
@@ -15,7 +16,6 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
     // User Modules
     private final IMessageRecipient messageRecipient;
     private transient final AsyncTeleport teleport;
-    private transient final Teleport legacyTeleport;
 
     // User command confirmation strings
     private final Map<User, BigDecimal> confirmingPayments = new WeakHashMap<>();
